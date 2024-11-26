@@ -17,6 +17,10 @@ public class Home extends javax.swing.JFrame {
     public Home() {
         initComponents();
         database = ConnectionModule.conector();
+        BoasVindas view = new BoasVindas();
+        view.setVisible(true);    
+        painelHome.removeAll();
+        painelHome.add(view);
     }
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -142,7 +146,8 @@ public class Home extends javax.swing.JFrame {
 
     private void registerClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerClientActionPerformed
         CadastroCliente cliente = new CadastroCliente();
-        cliente.setVisible(true);    
+        cliente.setVisible(true);  
+        painelHome.removeAll();
         painelHome.add(cliente);
     }//GEN-LAST:event_registerClientActionPerformed
 

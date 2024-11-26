@@ -9,16 +9,34 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import dal.ConnectionModule;
 import javax.swing.JOptionPane;
+import net.proteanit.sql.DbUtils;
 
 public class CadastroCliente extends javax.swing.JInternalFrame {
 
     Connection database = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
+    
     public CadastroCliente() {
         initComponents();
         database = ConnectionModule.conector();
+        PesquisarCliente();
         
+        javax.swing.plaf.InternalFrameUI ui = this.getUI();
+        if (ui instanceof javax.swing.plaf.basic.BasicInternalFrameUI) {
+            javax.swing.plaf.basic.BasicInternalFrameUI basicUI = (javax.swing.plaf.basic.BasicInternalFrameUI) ui;
+
+            // Remover o MouseMotionListener da barra de título
+            basicUI.getNorthPane().removeMouseMotionListener(
+                basicUI.getNorthPane().getMouseMotionListeners()[0]
+            );
+
+            // Remover a barra de título
+            basicUI.getNorthPane().setVisible(false);
+
+            // Remover a borda do internal frame (opcional)
+            this.setBorder(null);
+        }
     }
     
     private void AdicionarCliente(){
@@ -57,14 +75,135 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                     fieldAdress.setText(null);
                 }
             }
+            
+            PesquisarCliente();
         }
         catch(Exception ex){
-            System.err.println("Erro: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex);
         }
-        
-        
     }
     
+    private void PesquisarCliente(){
+        String sql;
+        if(fieldSearch.getText() != null){
+            sql = "select * from clientes where Nome like ?";
+        }
+        else{
+            sql = "select * from clientes";
+        }
+        
+        try{
+            pst = database.prepareStatement(sql);
+            pst.setString(1, fieldSearch.getText() + "%");
+            
+            rs = pst.executeQuery();
+            
+            tableClient.setModel(DbUtils.resultSetToTableModel(rs));
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    
+    public void SelecionarCliente(){
+        try{
+            int cliente = tableClient.getSelectedRow();
+            
+            fieldName.setText(tableClient.getModel().getValueAt(cliente, 1).toString());
+            String tipoCliente = tableClient.getModel().getValueAt(cliente, 2).toString();
+                if (tipoCliente.equalsIgnoreCase("F")) {
+                    fieldType.setSelectedItem("Física"); // Seleciona 'Física' na JComboBox
+                } else if (tipoCliente.equalsIgnoreCase("J")) {
+                    fieldType.setSelectedItem("Jurídica"); // Seleciona 'Jurídica' na JComboBox
+                } else {
+                    JOptionPane.showMessageDialog(null, "Tipo de cliente inválido!");
+                    return; // Sai do método
+                }
+            fieldCPF.setText(tableClient.getModel().getValueAt(cliente, 3).toString());
+            fieldTelephone.setText(tableClient.getModel().getValueAt(cliente, 4).toString());
+            fieldEmail.setText(tableClient.getModel().getValueAt(cliente, 5).toString());
+            fieldAdress.setText(tableClient.getModel().getValueAt(cliente, 6).toString());
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    
+    private void AlterarCliente(){
+        String sql = "UPDATE clientes SET Nome =?, TipoCliente =?, CPF_CNPJ =?, Telefone =?, Email =?, Endereco =? WHERE CPF_CNPJ =?";
+        
+        try{
+            pst = database.prepareStatement(sql);
+            pst.setString(1, fieldName.getText());
+            String tipoCliente = fieldType.getSelectedItem().toString();
+                if (tipoCliente.equalsIgnoreCase("Física")) {
+                    pst.setString(2, "F"); // Define 'F' para Pessoa Física
+                } else if (tipoCliente.equalsIgnoreCase("Jurídica")) {
+                    pst.setString(2, "J"); // Define 'J' para Pessoa Jurídica
+                } else {
+                    JOptionPane.showMessageDialog(null, "Tipo de cliente inválido!");
+                    return; // Sai do método
+                }
+            pst.setString(3, fieldCPF.getText());
+            pst.setString(4, fieldTelephone.getText());
+            pst.setString(5, fieldEmail.getText());
+            pst.setString(6, fieldAdress.getText());
+            pst.setString(7, fieldCPF.getText());
+            
+            if(fieldName.getText().isEmpty() || fieldType.getSelectedItem().toString().isEmpty() ||fieldCPF.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
+            }
+            else{
+                int adicionado = pst.executeUpdate();
+                
+                if(adicionado > 0){
+                    JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso!");
+                    
+                    fieldName.setText(null);
+                    fieldCPF.setText(null);
+                    fieldTelephone.setText(null);
+                    fieldEmail.setText(null);
+                    fieldAdress.setText(null);
+                }
+            }
+            
+            PesquisarCliente();
+        }
+        catch(Exception ex){
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    
+    private void DeletarCliente(){
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclução do cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
+        
+        if(confirma == JOptionPane.YES_OPTION){
+            String sql = "delete from clientes WHERE CPF_CNPJ =?";
+        
+            try{
+                pst = database.prepareStatement(sql);
+                pst.setString(1, fieldCPF.getText());
+
+                int apagado = pst.executeUpdate();
+
+                if(apagado > 0){
+                    JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
+
+                    fieldName.setText(null);
+                    fieldCPF.setText(null);
+                    fieldTelephone.setText(null);
+                    fieldEmail.setText(null);
+                    fieldAdress.setText(null);
+                }
+                
+
+                PesquisarCliente();
+            }
+            catch(Exception ex){
+                JOptionPane.showMessageDialog(null, ex);
+            }
+        }
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -99,6 +238,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
         jMenuItem2.setText("jMenuItem2");
 
         setBorder(null);
+        setForeground(java.awt.Color.gray);
         setTitle("Clientes");
         setAlignmentX(0.0F);
         setAlignmentY(0.0F);
@@ -157,7 +297,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
             }
         });
 
-        Search.setText("Buscar");
+        Search.setText("Buscar pelo nome");
         Search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SearchActionPerformed(evt);
@@ -172,6 +312,11 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
 
             }
         ));
+        tableClient.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableClientMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableClient);
 
         fieldType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Física", "Jurídica" }));
@@ -187,9 +332,9 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(420, 420, 420)
                                 .addComponent(Search)
-                                .addGap(204, 204, 204)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(SignalField))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(deleteClient)
@@ -276,7 +421,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_fieldEmailActionPerformed
 
     private void editClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editClientActionPerformed
-        // TODO add your handling code here:
+        AlterarCliente();
     }//GEN-LAST:event_editClientActionPerformed
 
     private void addClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addClientActionPerformed
@@ -284,12 +429,16 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_addClientActionPerformed
 
     private void deleteClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteClientActionPerformed
-        // TODO add your handling code here:
+        DeletarCliente();
     }//GEN-LAST:event_deleteClientActionPerformed
 
     private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
-        // TODO add your handling code here:
+        PesquisarCliente();
     }//GEN-LAST:event_SearchActionPerformed
+
+    private void tableClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientMouseClicked
+        SelecionarCliente();
+    }//GEN-LAST:event_tableClientMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
