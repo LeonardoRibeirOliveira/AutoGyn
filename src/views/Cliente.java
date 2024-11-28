@@ -162,33 +162,152 @@ public class Cliente extends javax.swing.JInternalFrame {
         }
     }
     
-    private void DeletarCliente(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclução do cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
-        
-        if(confirma == JOptionPane.YES_OPTION){
-            String sql = "delete from clientes WHERE CPF_CNPJ =?";
-        
-            try{
-                pst = database.prepareStatement(sql);
-                pst.setString(1, fieldCPF.getText());
+    private void DeletarCliente() {
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclusão do cliente?", "Atenção!", JOptionPane.YES_NO_OPTION);
 
+        if (confirma == JOptionPane.YES_OPTION) {
+            String cpfCnpj = fieldCPF.getText();
+
+            // Exibir informações relacionadas antes de excluir
+            try {
+                String consultaVinculos = """
+                    SELECT
+                        (SELECT COUNT(*) FROM Veiculos v INNER JOIN Clientes c ON v.IdCliente = c.IdCliente WHERE c.CPF_CNPJ = ?) AS TotalVeiculos,
+                        (SELECT COUNT(*) FROM OrdensDeServico os INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo 
+                            INNER JOIN Clientes c ON v.IdCliente = c.IdCliente WHERE c.CPF_CNPJ = ?) AS TotalOrdensServico,
+                        (SELECT COUNT(*) FROM ExecucaoOS ex INNER JOIN OrdensDeServico os ON ex.IdOS = os.IdOS 
+                            INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo 
+                            INNER JOIN Clientes c ON v.IdCliente = c.IdCliente WHERE c.CPF_CNPJ = ?) AS TotalExecucoes,
+                        (SELECT COUNT(*) FROM Pagamentos p INNER JOIN OrdensDeServico os ON p.IdOS = os.IdOS 
+                            INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo 
+                            INNER JOIN Clientes c ON v.IdCliente = c.IdCliente WHERE c.CPF_CNPJ = ?) AS TotalPagamentos,
+                        (SELECT COUNT(*) FROM ProdutosOS pos INNER JOIN OrdensDeServico os ON pos.IdOS = os.IdOS 
+                            INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo 
+                            INNER JOIN Clientes c ON v.IdCliente = c.IdCliente WHERE c.CPF_CNPJ = ?) AS TotalProdutosOS
+                    """;
+
+                pst = database.prepareStatement(consultaVinculos);
+                for (int i = 1; i <= 5; i++) {
+                    pst.setString(i, cpfCnpj);
+                }
+
+                rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    int totalVeiculos = rs.getInt("TotalVeiculos");
+                    int totalOrdensServico = rs.getInt("TotalOrdensServico");
+                    int totalExecucoes = rs.getInt("TotalExecucoes");
+                    int totalPagamentos = rs.getInt("TotalPagamentos");
+                    int totalProdutosOS = rs.getInt("TotalProdutosOS");
+
+                    String mensagem = String.format(
+                        "Este cliente possui os seguintes vínculos:\n" +
+                        "- Veículos: %d\n" +
+                        "- Ordens de Serviço: %d\n" +
+                        "- Execuções de OS: %d\n" +
+                        "- Pagamentos: %d\n" +
+                        "- Produtos de OS: %d\n\n" +
+                        "Todos os dados vinculados serão excluídos.\nDeseja continuar?",
+                        totalVeiculos, totalOrdensServico, totalExecucoes, totalPagamentos, totalProdutosOS
+                    );
+
+                    int confirmarExclusao = JOptionPane.showConfirmDialog(null, mensagem, "Confirmação", JOptionPane.YES_NO_OPTION);
+
+                    if (confirmarExclusao == JOptionPane.NO_OPTION) {
+                        return;
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao consultar vínculos: " + ex.getMessage());
+                return;
+            }
+
+            // Excluir em cascata
+            try {
+                database.setAutoCommit(false);
+
+                String deleteProdutosOS = """
+                    DELETE pos FROM ProdutosOS pos
+                    INNER JOIN OrdensDeServico os ON pos.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
+                    WHERE c.CPF_CNPJ = ?
+                """;
+                pst = database.prepareStatement(deleteProdutosOS);
+                pst.setString(1, cpfCnpj);
+                pst.executeUpdate();
+
+                String deletePagamentos = """
+                    DELETE p FROM Pagamentos p
+                    INNER JOIN OrdensDeServico os ON p.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
+                    WHERE c.CPF_CNPJ = ?
+                """;
+                pst = database.prepareStatement(deletePagamentos);
+                pst.setString(1, cpfCnpj);
+                pst.executeUpdate();
+
+                String deleteExecucoesOS = """
+                    DELETE ex FROM ExecucaoOS ex
+                    INNER JOIN OrdensDeServico os ON ex.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
+                    WHERE c.CPF_CNPJ = ?
+                """;
+                pst = database.prepareStatement(deleteExecucoesOS);
+                pst.setString(1, cpfCnpj);
+                pst.executeUpdate();
+
+                String deleteOrdensServico = """
+                    DELETE os FROM OrdensDeServico os
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
+                    WHERE c.CPF_CNPJ = ?
+                """;
+                pst = database.prepareStatement(deleteOrdensServico);
+                pst.setString(1, cpfCnpj);
+                pst.executeUpdate();
+
+                String deleteVeiculos = """
+                    DELETE v FROM Veiculos v
+                    INNER JOIN Clientes c ON v.IdCliente = c.IdCliente
+                    WHERE c.CPF_CNPJ = ?
+                """;
+                pst = database.prepareStatement(deleteVeiculos);
+                pst.setString(1, cpfCnpj);
+                pst.executeUpdate();
+
+                String deleteCliente = "DELETE FROM Clientes WHERE CPF_CNPJ = ?";
+                pst = database.prepareStatement(deleteCliente);
+                pst.setString(1, cpfCnpj);
                 int apagado = pst.executeUpdate();
 
-                if(apagado > 0){
-                    JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
-
-                    
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Cliente e todos os dados relacionados foram removidos com sucesso!");
                 }
-                
-                LimparCampos();
 
-                PesquisarCliente();
+                database.commit();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao excluir cliente: " + ex.getMessage());
+                try {
+                    database.rollback();
+                } catch (Exception rollbackEx) {
+                    JOptionPane.showMessageDialog(null, "Erro ao desfazer alterações: " + rollbackEx.getMessage());
+                }
+            } finally {
+                try {
+                    database.setAutoCommit(true);
+                } catch (Exception autoCommitEx) {
+                    JOptionPane.showMessageDialog(null, "Erro ao redefinir transação: " + autoCommitEx.getMessage());
+                }
             }
-            catch(Exception ex){
-                JOptionPane.showMessageDialog(null, ex);
-            }
+
+            LimparCampos();
+            PesquisarCliente();
         }
     }
+
     
     private void LimparCampos(){
         fieldName.setText(null);

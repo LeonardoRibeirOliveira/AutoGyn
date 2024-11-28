@@ -111,33 +111,128 @@ public class Veiculo extends javax.swing.JInternalFrame {
         }
     }
     
-    private void DeletarCliente(){
-        int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclução do veículo?", "Atenção!", JOptionPane.YES_NO_OPTION);
-        
-        if(confirma == JOptionPane.YES_OPTION){
-            String sql = "delete from veiculos WHERE Placa =?";
-        
-            try{
-                pst = database.prepareStatement(sql);
-                pst.setString(1, fieldPlaca.getText());
+    private void DeletarVeiculo() {
+        ResultSet rs;
+        int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclusão do veículo?", "Atenção!", JOptionPane.YES_NO_OPTION);
 
+        if (confirma == JOptionPane.YES_OPTION) {
+            String placa = fieldPlaca.getText();
+
+            try {
+                String consultaVinculos = """
+                    SELECT
+                        (SELECT COUNT(*) FROM OrdensDeServico os INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo WHERE v.Placa = ?) AS TotalOrdensServico,
+                        (SELECT COUNT(*) FROM ExecucaoOS ex INNER JOIN OrdensDeServico os ON ex.IdOS = os.IdOS INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo WHERE v.Placa = ?) AS TotalExecucoes,
+                        (SELECT COUNT(*) FROM Pagamentos p INNER JOIN OrdensDeServico os ON p.IdOS = os.IdOS INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo WHERE v.Placa = ?) AS TotalPagamentos,
+                        (SELECT COUNT(*) FROM ProdutosOS pos INNER JOIN OrdensDeServico os ON pos.IdOS = os.IdOS INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo WHERE v.Placa = ?) AS TotalProdutosOS
+                    """;
+
+                pst = database.prepareStatement(consultaVinculos);
+                for (int i = 1; i <= 4; i++) {
+                    pst.setString(i, placa);
+                }
+
+                rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    int totalOrdensServico = rs.getInt("TotalOrdensServico");
+                    int totalExecucoes = rs.getInt("TotalExecucoes");
+                    int totalPagamentos = rs.getInt("TotalPagamentos");
+                    int totalProdutosOS = rs.getInt("TotalProdutosOS");
+
+                    String mensagem = String.format(
+                        "Este veículo possui os seguintes vínculos:\n" +
+                        "- Ordens de Serviço: %d\n" +
+                        "- Execuções de OS: %d\n" +
+                        "- Pagamentos: %d\n" +
+                        "- Produtos de OS: %d\n\n" +
+                        "Todos os dados vinculados serão excluídos.\nDeseja continuar?",
+                        totalOrdensServico, totalExecucoes, totalPagamentos, totalProdutosOS
+                    );
+
+                    int confirmarExclusao = JOptionPane.showConfirmDialog(null, mensagem, "Confirmação", JOptionPane.YES_NO_OPTION);
+
+                    if (confirmarExclusao == JOptionPane.NO_OPTION) {
+                        return;
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao consultar vínculos: " + ex.getMessage());
+                return;
+            }
+
+            try {
+                database.setAutoCommit(false);
+
+                String deleteProdutosOS = """
+                    DELETE pos FROM ProdutosOS pos
+                    INNER JOIN OrdensDeServico os ON pos.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    WHERE v.Placa = ?
+                """;
+                pst = database.prepareStatement(deleteProdutosOS);
+                pst.setString(1, placa);
+                pst.executeUpdate();
+
+                String deletePagamentos = """
+                    DELETE p FROM Pagamentos p
+                    INNER JOIN OrdensDeServico os ON p.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    WHERE v.Placa = ?
+                """;
+                pst = database.prepareStatement(deletePagamentos);
+                pst.setString(1, placa);
+                pst.executeUpdate();
+
+                String deleteExecucoesOS = """
+                    DELETE ex FROM ExecucaoOS ex
+                    INNER JOIN OrdensDeServico os ON ex.IdOS = os.IdOS
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    WHERE v.Placa = ?
+                """;
+                pst = database.prepareStatement(deleteExecucoesOS);
+                pst.setString(1, placa);
+                pst.executeUpdate();
+
+                String deleteOrdensServico = """
+                    DELETE os FROM OrdensDeServico os
+                    INNER JOIN Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                    WHERE v.Placa = ?
+                """;
+                pst = database.prepareStatement(deleteOrdensServico);
+                pst.setString(1, placa);
+                pst.executeUpdate();
+
+                String deleteVeiculo = "DELETE FROM Veiculos WHERE Placa = ?";
+                pst = database.prepareStatement(deleteVeiculo);
+                pst.setString(1, placa);
                 int apagado = pst.executeUpdate();
 
-                if(apagado > 0){
-                    JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso!");
-
-                    
+                if (apagado > 0) {
+                    JOptionPane.showMessageDialog(null, "Veículo e todos os dados relacionados foram removidos com sucesso!");
                 }
-                
-                LimparCampos();
 
-                PesquisarVeiculo();
+                database.commit();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao excluir veículo: " + ex.getMessage());
+                try {
+                    database.rollback();
+                } catch (Exception rollbackEx) {
+                    JOptionPane.showMessageDialog(null, "Erro ao desfazer alterações: " + rollbackEx.getMessage());
+                }
+            } finally {
+                try {
+                    database.setAutoCommit(true);
+                } catch (Exception autoCommitEx) {
+                    JOptionPane.showMessageDialog(null, "Erro ao redefinir transação: " + autoCommitEx.getMessage());
+                }
             }
-            catch(Exception ex){
-                JOptionPane.showMessageDialog(null, ex);
-            }
+
+            LimparCampos();
+            PesquisarVeiculo();
         }
     }
+
     
     private void AlterarVeiculo(){
         String sql = "UPDATE veiculos SET Placa =?, Modelo =?, Marca =?, Ano =?, IdCliente =? WHERE Placa =? ";
@@ -378,7 +473,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tableVeiculo);
 
-        SearchVeiculo.setText("Buscar pelo nome");
+        SearchVeiculo.setText("Buscar pela placa");
         SearchVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SearchVeiculoActionPerformed(evt);
@@ -490,7 +585,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_fieldPlacaActionPerformed
 
     private void deleteVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVeiculoActionPerformed
-        DeletarCliente();
+        DeletarVeiculo();
     }//GEN-LAST:event_deleteVeiculoActionPerformed
 
     private void fieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSearchActionPerformed
