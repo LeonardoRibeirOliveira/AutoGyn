@@ -166,7 +166,10 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_registerClientActionPerformed
 
     private void registerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStockActionPerformed
-        // TODO add your handling code here:
+        Estoque estoque = new Estoque();
+        estoque.setVisible(true);  
+        painelHome.removeAll();
+        painelHome.add(estoque);
     }//GEN-LAST:event_registerStockActionPerformed
 
     private void registerVeiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerVeiclesActionPerformed

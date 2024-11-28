@@ -40,13 +40,13 @@ public class Veiculo extends javax.swing.JInternalFrame {
         
         try{
             pst = database.prepareStatement(sql);
-            pst.setString(1, fieldPlaca.getText());
+            pst.setString(1, fieldAno.getText());
             pst.setString(2, fieldModelo.getText());
             pst.setString(3, fieldMarca.getText());
             pst.setString(4, fieldAno.getText());
             pst.setString(5, fieldIdcliente.getText());
             
-            if(fieldPlaca.getText().isEmpty() || fieldModelo.getText().isEmpty() || fieldMarca.getText().isEmpty() || fieldAno.getText().isEmpty() || fieldIdcliente.getText().isEmpty()){
+            if(fieldAno.getText().isEmpty() || fieldModelo.getText().isEmpty() || fieldMarca.getText().isEmpty() || fieldAno.getText().isEmpty() || fieldIdcliente.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
             }
             else{
@@ -100,7 +100,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         try{
             int veiculo = tableVeiculo.getSelectedRow();
             
-            fieldPlaca.setText(tableVeiculo.getModel().getValueAt(veiculo, 1).toString());
+            fieldAno.setText(tableVeiculo.getModel().getValueAt(veiculo, 1).toString());
             fieldModelo.setText(tableVeiculo.getModel().getValueAt(veiculo, 2).toString());
             fieldMarca.setText(tableVeiculo.getModel().getValueAt(veiculo, 3).toString());
             fieldAno.setText(tableVeiculo.getModel().getValueAt(veiculo, 4).toString());
@@ -116,7 +116,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         int confirma = JOptionPane.showConfirmDialog(null, "Deseja confirmar a exclusão do veículo?", "Atenção!", JOptionPane.YES_NO_OPTION);
 
         if (confirma == JOptionPane.YES_OPTION) {
-            String placa = fieldPlaca.getText();
+            String placa = fieldAno.getText();
 
             try {
                 String consultaVinculos = """
@@ -232,21 +232,20 @@ public class Veiculo extends javax.swing.JInternalFrame {
             PesquisarVeiculo();
         }
     }
-
-    
+ 
     private void AlterarVeiculo(){
         String sql = "UPDATE veiculos SET Placa =?, Modelo =?, Marca =?, Ano =?, IdCliente =? WHERE Placa =? ";
         
         try{
             pst = database.prepareStatement(sql);
-            pst.setString(1, fieldPlaca.getText());
+            pst.setString(1, fieldAno.getText());
             pst.setString(2, fieldModelo.getText());
             pst.setString(3, fieldMarca.getText());
             pst.setString(4, fieldAno.getText());
             pst.setString(5, fieldIdcliente.getText());
-            pst.setString(6, fieldPlaca.getText());
+            pst.setString(6, fieldAno.getText());
             
-            if(fieldPlaca.getText().isEmpty() || fieldModelo.getText().isEmpty() || fieldMarca.getText().isEmpty() || fieldAno.getText().isEmpty() || fieldIdcliente.getText().isEmpty()){
+            if(fieldAno.getText().isEmpty() || fieldModelo.getText().isEmpty() || fieldMarca.getText().isEmpty() || fieldAno.getText().isEmpty() || fieldIdcliente.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
             }
             else{
@@ -307,7 +306,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
     
     private void LimparCampos(){
         fieldIdcliente.setText(null);
-        fieldPlaca.setText(null);
+        fieldAno.setText(null);
         fieldModelo.setText(null);
         fieldAno.setText(null);
         fieldMarca.setText(null);
@@ -324,10 +323,9 @@ public class Veiculo extends javax.swing.JInternalFrame {
         Search = new javax.swing.JButton();
         fieldModelo = new javax.swing.JTextField();
         addClient = new javax.swing.JButton();
-        fieldPlaca = new javax.swing.JTextField();
+        fieldAno = new javax.swing.JTextField();
         deleteVeiculo = new javax.swing.JButton();
         fieldMarca = new javax.swing.JTextField();
-        fieldAno = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -340,6 +338,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         tableVeiculo = new javax.swing.JTable();
         SearchVeiculo = new javax.swing.JButton();
         fieldSearchVeiculo = new javax.swing.JTextField();
+        fieldPlaca1 = new javax.swing.JTextField();
 
         setBorder(null);
         setPreferredSize(new java.awt.Dimension(908, 604));
@@ -413,9 +412,9 @@ public class Veiculo extends javax.swing.JInternalFrame {
             }
         });
 
-        fieldPlaca.addActionListener(new java.awt.event.ActionListener() {
+        fieldAno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPlacaActionPerformed(evt);
+                fieldAnoActionPerformed(evt);
             }
         });
 
@@ -423,12 +422,6 @@ public class Veiculo extends javax.swing.JInternalFrame {
         deleteVeiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteVeiculoActionPerformed(evt);
-            }
-        });
-
-        fieldAno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldAnoActionPerformed(evt);
             }
         });
 
@@ -486,6 +479,12 @@ public class Veiculo extends javax.swing.JInternalFrame {
             }
         });
 
+        fieldPlaca1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldPlaca1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -516,19 +515,19 @@ public class Veiculo extends javax.swing.JInternalFrame {
                                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(fieldPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                                            .addComponent(fieldAno, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                                             .addComponent(jLabel3)
                                             .addComponent(jLabel2)
                                             .addComponent(jLabel1)
                                             .addComponent(fieldIdcliente)
-                                            .addComponent(fieldAno))
+                                            .addComponent(fieldPlaca1))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4)
                                             .addComponent(fieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(fieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel6))))
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 22, Short.MAX_VALUE)))
                         .addGap(41, 41, 41))))
         );
         layout.setVerticalGroup(
@@ -542,7 +541,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -555,22 +554,22 @@ public class Veiculo extends javax.swing.JInternalFrame {
                         .addGap(7, 7, 7)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fieldPlaca1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jLabel3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(fieldAno, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(fieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fieldAno, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(deleteVeiculo)
                     .addComponent(editVeiculo)
                     .addComponent(addClient))
-                .addGap(68, 68, 68))
+                .addGap(87, 87, 87))
         );
 
         pack();
@@ -580,9 +579,9 @@ public class Veiculo extends javax.swing.JInternalFrame {
         AdicionarVeiculo();
     }//GEN-LAST:event_addClientActionPerformed
 
-    private void fieldPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPlacaActionPerformed
+    private void fieldAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAnoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPlacaActionPerformed
+    }//GEN-LAST:event_fieldAnoActionPerformed
 
     private void deleteVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteVeiculoActionPerformed
         DeletarVeiculo();
@@ -591,10 +590,6 @@ public class Veiculo extends javax.swing.JInternalFrame {
     private void fieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSearchActionPerformed
         PesquisarCliente();
     }//GEN-LAST:event_fieldSearchActionPerformed
-
-    private void fieldAnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAnoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_fieldAnoActionPerformed
 
     private void SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchActionPerformed
         PesquisarCliente();
@@ -620,6 +615,10 @@ public class Veiculo extends javax.swing.JInternalFrame {
         SelecionarVeiculo();
     }//GEN-LAST:event_tableVeiculoMouseClicked
 
+    private void fieldPlaca1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPlaca1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldPlaca1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Search;
@@ -632,7 +631,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField fieldIdcliente;
     private javax.swing.JTextField fieldMarca;
     private javax.swing.JTextField fieldModelo;
-    private javax.swing.JTextField fieldPlaca;
+    private javax.swing.JTextField fieldPlaca1;
     private javax.swing.JTextField fieldSearch;
     private javax.swing.JTextField fieldSearchVeiculo;
     private javax.swing.JLabel jLabel1;
