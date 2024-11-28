@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
 package views;
 
 import java.sql.Connection;
@@ -11,13 +7,13 @@ import dal.ConnectionModule;
 import javax.swing.JOptionPane;
 import net.proteanit.sql.DbUtils;
 
-public class CadastroCliente extends javax.swing.JInternalFrame {
+public class Cliente extends javax.swing.JInternalFrame {
 
     Connection database = null;
     PreparedStatement pst = null;
     ResultSet rs = null;
     
-    public CadastroCliente() {
+    public Cliente() {
         initComponents();
         database = ConnectionModule.conector();
         PesquisarCliente();
@@ -68,11 +64,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                 if(adicionado > 0){
                     JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso!");
                     
-                    fieldName.setText(null);
-                    fieldCPF.setText(null);
-                    fieldTelephone.setText(null);
-                    fieldEmail.setText(null);
-                    fieldAdress.setText(null);
+                    LimparCampos();
                 }
             }
             
@@ -157,13 +149,9 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                 int adicionado = pst.executeUpdate();
                 
                 if(adicionado > 0){
-                    JOptionPane.showMessageDialog(null, "Cliente adicionado com sucesso!");
+                    JOptionPane.showMessageDialog(null, "Cliente alterado com sucesso!");
                     
-                    fieldName.setText(null);
-                    fieldCPF.setText(null);
-                    fieldTelephone.setText(null);
-                    fieldEmail.setText(null);
-                    fieldAdress.setText(null);
+                    LimparCampos();
                 }
             }
             
@@ -189,13 +177,10 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                 if(apagado > 0){
                     JOptionPane.showMessageDialog(null, "Cliente removido com sucesso!");
 
-                    fieldName.setText(null);
-                    fieldCPF.setText(null);
-                    fieldTelephone.setText(null);
-                    fieldEmail.setText(null);
-                    fieldAdress.setText(null);
+                    
                 }
                 
+                LimparCampos();
 
                 PesquisarCliente();
             }
@@ -203,6 +188,14 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, ex);
             }
         }
+    }
+    
+    private void LimparCampos(){
+        fieldName.setText(null);
+        fieldCPF.setText(null);
+        fieldTelephone.setText(null);
+        fieldEmail.setText(null);
+        fieldAdress.setText(null);
     }
     
     @SuppressWarnings("unchecked")
@@ -244,7 +237,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
         setAlignmentY(0.0F);
         setPreferredSize(new java.awt.Dimension(908, 604));
 
-        SignalField.setText("* Campos Obirgatórios");
+        SignalField.setText("* Campos Obrigatórios");
 
         fieldName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -297,6 +290,12 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
             }
         });
 
+        fieldSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldSearchActionPerformed(evt);
+            }
+        });
+
         Search.setText("Buscar pelo nome");
         Search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -304,6 +303,11 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
             }
         });
 
+        tableClient = new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex, int colIndex){
+                return false;
+            }
+        };
         tableClient.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -312,6 +316,7 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
 
             }
         ));
+        tableClient.getTableHeader().setReorderingAllowed(false);
         tableClient.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableClientMouseClicked(evt);
@@ -371,9 +376,9 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
                     .addComponent(SignalField)
                     .addComponent(fieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Search))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                .addGap(34, 34, 34)
+                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel1))
@@ -439,6 +444,10 @@ public class CadastroCliente extends javax.swing.JInternalFrame {
     private void tableClientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableClientMouseClicked
         SelecionarCliente();
     }//GEN-LAST:event_tableClientMouseClicked
+
+    private void fieldSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldSearchActionPerformed
+        PesquisarCliente();
+    }//GEN-LAST:event_fieldSearchActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

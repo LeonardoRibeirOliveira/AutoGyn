@@ -32,6 +32,7 @@ public class Home extends javax.swing.JFrame {
         registerClient = new javax.swing.JMenuItem();
         registerService = new javax.swing.JMenuItem();
         registerStock = new javax.swing.JMenuItem();
+        registerVeicles = new javax.swing.JMenuItem();
         Report = new javax.swing.JMenu();
         reportService = new javax.swing.JMenuItem();
         Options = new javax.swing.JMenu();
@@ -64,7 +65,7 @@ public class Home extends javax.swing.JFrame {
 
         register.setText("Cadastro");
 
-        registerClient.setText("Cliente");
+        registerClient.setText("Clientes");
         registerClient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 registerClientActionPerformed(evt);
@@ -76,7 +77,20 @@ public class Home extends javax.swing.JFrame {
         register.add(registerService);
 
         registerStock.setText("Estoque");
+        registerStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerStockActionPerformed(evt);
+            }
+        });
         register.add(registerStock);
+
+        registerVeicles.setText("Veículos");
+        registerVeicles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerVeiclesActionPerformed(evt);
+            }
+        });
+        register.add(registerVeicles);
 
         menuBarHome.add(register);
 
@@ -145,11 +159,22 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void registerClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerClientActionPerformed
-        CadastroCliente cliente = new CadastroCliente();
+        Cliente cliente = new Cliente();
         cliente.setVisible(true);  
         painelHome.removeAll();
         painelHome.add(cliente);
     }//GEN-LAST:event_registerClientActionPerformed
+
+    private void registerStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerStockActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registerStockActionPerformed
+
+    private void registerVeiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerVeiclesActionPerformed
+        Veiculo veiculo = new Veiculo();
+        veiculo.setVisible(true);  
+        painelHome.removeAll();
+        painelHome.add(veiculo);
+    }//GEN-LAST:event_registerVeiclesActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -170,6 +195,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JMenuItem registerClient;
     private javax.swing.JMenuItem registerService;
     private javax.swing.JMenuItem registerStock;
+    private javax.swing.JMenuItem registerVeicles;
     private javax.swing.JMenuItem reportService;
     // End of variables declaration//GEN-END:variables
 }
