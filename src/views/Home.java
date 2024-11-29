@@ -30,9 +30,13 @@ public class Home extends javax.swing.JFrame {
         menuBarHome = new javax.swing.JMenuBar();
         register = new javax.swing.JMenu();
         registerClient = new javax.swing.JMenuItem();
-        registerService = new javax.swing.JMenuItem();
         registerStock = new javax.swing.JMenuItem();
         registerVeicles = new javax.swing.JMenuItem();
+        registerService = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         Report = new javax.swing.JMenu();
         reportService = new javax.swing.JMenuItem();
         Options = new javax.swing.JMenu();
@@ -60,7 +64,7 @@ public class Home extends javax.swing.JFrame {
         );
         painelHomeLayout.setVerticalGroup(
             painelHomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 604, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
         );
 
         register.setText("Cadastro");
@@ -72,9 +76,6 @@ public class Home extends javax.swing.JFrame {
             }
         });
         register.add(registerClient);
-
-        registerService.setText("Serviços");
-        register.add(registerService);
 
         registerStock.setText("Estoque");
         registerStock.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +93,38 @@ public class Home extends javax.swing.JFrame {
         });
         register.add(registerVeicles);
 
+        registerService.setText("Ordens de Serviço");
+        registerService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registerServiceActionPerformed(evt);
+            }
+        });
+        register.add(registerService);
+
         menuBarHome.add(register);
+
+        jMenu1.setText("Controle");
+
+        jMenuItem1.setText("Execução OS");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Pagamento OS");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Produto OS");
+        jMenu1.add(jMenuItem3);
+
+        menuBarHome.add(jMenu1);
 
         Report.setText("Relatório");
 
@@ -130,9 +162,8 @@ public class Home extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(painelHome)
-                .addContainerGap())
+                .addComponent(painelHome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
 
         setSize(new java.awt.Dimension(936, 647));
@@ -179,6 +210,21 @@ public class Home extends javax.swing.JFrame {
         painelHome.add(veiculo);
     }//GEN-LAST:event_registerVeiclesActionPerformed
 
+    private void registerServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerServiceActionPerformed
+        OrdemServico ordemServico = new OrdemServico();
+        ordemServico.setVisible(true);  
+        painelHome.removeAll();
+        painelHome.add(ordemServico);
+    }//GEN-LAST:event_registerServiceActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -190,6 +236,10 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Options;
     private javax.swing.JMenu Report;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuBar menuBarHome;
     private javax.swing.JMenuItem optionsExit;
     private javax.swing.JMenuItem optionsHelp;

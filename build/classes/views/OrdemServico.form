@@ -31,51 +31,41 @@
               <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jScrollPane2" min="-2" pref="802" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="68" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="SignalField" min="-2" max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="825" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="deleteVeiculo" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="editVeiculo" min="-2" max="-2" attributes="0"/>
+                              <Component id="editOS" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="addClient" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="fieldSearchVeiculo" min="-2" pref="259" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="SearchVeiculo" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="288" max="-2" attributes="0"/>
-                                      <Component id="SignalField" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                          <Component id="fieldAno" pref="123" max="32767" attributes="0"/>
-                                          <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="fieldIdcliente" alignment="0" max="32767" attributes="0"/>
-                                          <Component id="fieldPlaca" max="32767" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                          <Component id="fieldModelo" min="-2" pref="237" max="-2" attributes="0"/>
-                                          <Component id="fieldMarca" alignment="0" min="-2" pref="237" max="-2" attributes="0"/>
-                                          <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="0" pref="22" max="32767" attributes="0"/>
+                              <Component id="addOS" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="41" pref="41" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="45" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="dataConclusao" max="32767" attributes="0"/>
+                                  <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="dataAbertura" max="32767" attributes="0"/>
+                                  <Component id="fieldIdveiculo" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="valorTotal" max="32767" attributes="0"/>
+                                  <Component id="statusOS" alignment="0" pref="193" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Component id="idOS" min="-2" pref="0" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -85,11 +75,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fieldSearchVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="SearchVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="SignalField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="SignalField" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="154" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -101,14 +87,14 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fieldIdcliente" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Component id="fieldModelo" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="statusOS" max="32767" attributes="0"/>
+                          <Component id="fieldIdveiculo" pref="40" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                       <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="fieldPlaca" min="-2" pref="40" max="-2" attributes="0"/>
+                      <Component id="dataAbertura" min="-2" pref="40" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -116,19 +102,20 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="fieldMarca" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
-                          <Component id="fieldAno" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="valorTotal" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="dataConclusao" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace pref="12" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="deleteVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="editVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="addClient" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="editOS" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="addOS" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="idOS" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="72" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -138,7 +125,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Cliente"/>
+            <TitledBorder title="Ve&#xed;culo"/>
           </Border>
         </Property>
       </Properties>
@@ -183,7 +170,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="tableClient">
+            <Component class="javax.swing.JTable" name="tableVeiculo">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="0" rowCount="0"/>
@@ -193,10 +180,10 @@
                 </Property>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableClientMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableVeiculoMouseClicked"/>
               </Events>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tableClient = new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int rowIndex, int colIndex){&#xa;        return false;&#xa;    }&#xa;};"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tableVeiculo = new javax.swing.JTable(){&#xa;    public boolean isCellEditable(int rowIndex, int colIndex){&#xa;        return false;&#xa;    }&#xa;};"/>
               </AuxValues>
             </Component>
           </SubComponents>
@@ -208,7 +195,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="Search">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Buscar pelo nome"/>
+            <Property name="text" type="java.lang.String" value="Buscar pela placa"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SearchActionPerformed"/>
@@ -216,49 +203,42 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="fieldModelo">
-    </Component>
-    <Component class="javax.swing.JButton" name="addClient">
+    <Component class="javax.swing.JButton" name="addOS">
       <Properties>
         <Property name="text" type="java.lang.String" value="Adicionar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addClientActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addOSActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldAno">
+    <Component class="javax.swing.JTextField" name="dataConclusao">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldAnoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataConclusaoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="deleteVeiculo">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Deletar"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deleteVeiculoActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fieldMarca">
+    <Component class="javax.swing.JTextField" name="valorTotal">
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTextField(&quot;0.00&quot;)"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="* Id cliente"/>
+        <Property name="text" type="java.lang.String" value="* Id ve&#xed;culo"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="* Placa"/>
+        <Property name="text" type="java.lang.String" value="* Data abertura (dd/mm/yyyy)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="* Ano"/>
+        <Property name="text" type="java.lang.String" value="* Data conclus&#xe3;o (dd/mm/yyyy)"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="* Modelo"/>
+        <Property name="text" type="java.lang.String" value="* Status"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="SignalField">
@@ -268,10 +248,10 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel6">
       <Properties>
-        <Property name="text" type="java.lang.String" value="* Marca"/>
+        <Property name="text" type="java.lang.String" value="Valor total"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldIdcliente">
+    <Component class="javax.swing.JTextField" name="fieldIdveiculo">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -286,12 +266,12 @@
         <Property name="name" type="java.lang.String" value="" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="editVeiculo">
+    <Component class="javax.swing.JButton" name="editOS">
       <Properties>
         <Property name="text" type="java.lang.String" value="Editar"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editVeiculoActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="editOSActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane2">
@@ -301,37 +281,39 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tableVeiculo">
+        <Component class="javax.swing.JTable" name="tableOS">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="0" rowCount="0"/>
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableVeiculoMouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tableOSMouseClicked"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tableVeiculo = new javax.swing.JTable(){     public boolean isCellEditable(int rowIndex, int colIndex){         return false;     } };"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="tableOS = new javax.swing.JTable(){     public boolean isCellEditable(int rowIndex, int colIndex){         return false;     } };"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="SearchVeiculo">
+    <Component class="javax.swing.JTextField" name="dataAbertura">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="dataAberturaActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="statusOS">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Buscar pela placa"/>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Aberta&quot;, &quot;Em Execu&#xe7;&#xe3;o&quot;, &quot;Conclu&#xed;da&quot;, &quot;Cancelada&quot; })" type="code"/>
+        </Property>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SearchVeiculoActionPerformed"/>
-      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldSearchVeiculo">
+    <Component class="javax.swing.JTextField" name="idOS">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldSearchVeiculoActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fieldPlaca">
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fieldPlacaActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idOSActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

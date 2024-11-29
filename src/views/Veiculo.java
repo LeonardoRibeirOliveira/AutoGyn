@@ -70,7 +70,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         String sql;
         ResultSet rs;
         if (fieldSearch.getText() != null && !fieldSearch.getText().isEmpty()) {
-            sql = "SELECT v.IdVeiculo AS Id, v.Placa AS Placa, v.Modelo AS Modelo, v.Marca AS Marca, v.Ano AS Ano, c.IdCliente AS IdCliente c.Nome AS NomeCliente, c.CPF_CNPJ AS CpfCliente" +
+            sql = "SELECT v.IdVeiculo AS Id, v.Placa AS Placa, v.Modelo AS Modelo, v.Marca AS Marca, v.Ano AS Ano, c.IdCliente AS IdCliente, c.Nome AS NomeCliente, c.CPF_CNPJ AS CpfCliente" +
                   "FROM veiculos v " +
                   "JOIN clientes c ON v.IdCliente = c.IdCliente " +
                   "WHERE v.Placa LIKE ?";
@@ -100,7 +100,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         try{
             int veiculo = tableVeiculo.getSelectedRow();
             
-            fieldAno.setText(tableVeiculo.getModel().getValueAt(veiculo, 1).toString());
+            fieldPlaca.setText(tableVeiculo.getModel().getValueAt(veiculo, 1).toString());
             fieldModelo.setText(tableVeiculo.getModel().getValueAt(veiculo, 2).toString());
             fieldMarca.setText(tableVeiculo.getModel().getValueAt(veiculo, 3).toString());
             fieldAno.setText(tableVeiculo.getModel().getValueAt(veiculo, 4).toString());
@@ -338,7 +338,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
         tableVeiculo = new javax.swing.JTable();
         SearchVeiculo = new javax.swing.JButton();
         fieldSearchVeiculo = new javax.swing.JTextField();
-        fieldPlaca1 = new javax.swing.JTextField();
+        fieldPlaca = new javax.swing.JTextField();
 
         setBorder(null);
         setPreferredSize(new java.awt.Dimension(908, 604));
@@ -479,9 +479,9 @@ public class Veiculo extends javax.swing.JInternalFrame {
             }
         });
 
-        fieldPlaca1.addActionListener(new java.awt.event.ActionListener() {
+        fieldPlaca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fieldPlaca1ActionPerformed(evt);
+                fieldPlacaActionPerformed(evt);
             }
         });
 
@@ -494,7 +494,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 68, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -506,7 +506,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(fieldSearchVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fieldSearchVeiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(SearchVeiculo)
                                         .addGap(288, 288, 288)
@@ -520,7 +520,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                                             .addComponent(jLabel2)
                                             .addComponent(jLabel1)
                                             .addComponent(fieldIdcliente)
-                                            .addComponent(fieldPlaca1))
+                                            .addComponent(fieldPlaca))
                                         .addGap(18, 18, 18)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel4)
@@ -554,7 +554,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
                         .addGap(7, 7, 7)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldPlaca1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fieldPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
@@ -615,9 +615,9 @@ public class Veiculo extends javax.swing.JInternalFrame {
         SelecionarVeiculo();
     }//GEN-LAST:event_tableVeiculoMouseClicked
 
-    private void fieldPlaca1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPlaca1ActionPerformed
+    private void fieldPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldPlacaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_fieldPlaca1ActionPerformed
+    }//GEN-LAST:event_fieldPlacaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -631,7 +631,7 @@ public class Veiculo extends javax.swing.JInternalFrame {
     private javax.swing.JTextField fieldIdcliente;
     private javax.swing.JTextField fieldMarca;
     private javax.swing.JTextField fieldModelo;
-    private javax.swing.JTextField fieldPlaca1;
+    private javax.swing.JTextField fieldPlaca;
     private javax.swing.JTextField fieldSearch;
     private javax.swing.JTextField fieldSearchVeiculo;
     private javax.swing.JLabel jLabel1;
