@@ -8,14 +8,14 @@ import java.text.SimpleDateFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import net.proteanit.sql.DbUtils;
-public class ExecucaoOS extends javax.swing.JInternalFrame {
+public class PagamentoOS extends javax.swing.JInternalFrame {
 
     Connection database = null;
     PreparedStatement pst = null;
     SimpleDateFormat userInputFormat = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyy-MM-dd");
     
-    public ExecucaoOS() {
+    public PagamentoOS() {
         initComponents();
         database = ConnectionModule.conector();
         PesquisarOS();
@@ -37,21 +37,21 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
         }
     }
     
-    private void AdicionarExecucaoOS() {
-        String sql = "insert into ExecucaoOS (IdOS, DescricaoExecucao, DataExecucao) values(?,?,?)";
+    private void AdicionarPagamentoOS() {
+        String sql = "insert into Pagamentos (IdOS, ValorPago, DataPagamento, MeioPagamento) values(?,?,?,?)";
 
         try {
+            java.util.Date parsedDatapgto = userInputFormat.parse(dataPagamento.getText());
+
+            String formatDatapgto = databaseFormat.format(parsedDatapgto);
+            
             pst = database.prepareStatement(sql);
-
-            java.util.Date parsedDataAbertura = userInputFormat.parse(dataAbertura.getText());
-
-            String formattedDataAbertura = databaseFormat.format(parsedDataAbertura);
-
             pst.setString(1, fieldIdos.getText());
-            pst.setString(2, descOs.getText());
-            pst.setString(3, formattedDataAbertura);
+            pst.setString(2, valorPago.getText());
+            pst.setString(3, formatDatapgto);
+            pst.setString(4, meioPagamento.getSelectedItem().toString());
 
-            if (fieldIdos.getText().isEmpty() || dataAbertura.getText().isEmpty() || formattedDataAbertura.isEmpty()|| descOs.getText().isEmpty()) {
+            if (fieldIdos.getText().isEmpty() || valorPago.getText().isEmpty() || formatDatapgto.isEmpty()|| meioPagamento.getSelectedItem().toString().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Preencha todos os campos obrigatórios!");
             } else {
                 int adicionado = pst.executeUpdate();
@@ -100,7 +100,7 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
         String sql;
         ResultSet rs;
         
-        sql = "SELECT * FROM ExecucaoOS WHERE IdOS = ?";
+        sql = "SELECT * FROM Pagamentos WHERE IdOS = ?";
         
         try{
             int cliente = tableOS.getSelectedRow();
@@ -112,7 +112,7 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
             
             rs = pst.executeQuery();
             
-            tableExecucao.setModel(DbUtils.resultSetToTableModel(rs));
+            tablePagamento.setModel(DbUtils.resultSetToTableModel(rs));
         }
         catch(Exception ex){
             JOptionPane.showMessageDialog(null, ex);
@@ -123,8 +123,8 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
     
     
     private void LimparCampos(){
-        dataAbertura.setText(null);
-        dataAbertura.setText(null);
+        valorPago.setText(null);
+        valorPago.setText(null);
     }
     
     @SuppressWarnings("unchecked")
@@ -141,12 +141,13 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
         SignalField = new javax.swing.JLabel();
         fieldIdos = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tableExecucao = new javax.swing.JTable();
-        dataAbertura = new javax.swing.JTextField();
+        tablePagamento = new javax.swing.JTable();
+        valorPago = new javax.swing.JTextField();
         idOS = new javax.swing.JTextField();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        descOs = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
+        dataPagamento = new javax.swing.JTextField();
+        meioPagamento = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
 
         setBorder(null);
         setPreferredSize(new java.awt.Dimension(908, 604));
@@ -174,7 +175,7 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tableOS);
 
-        SignalField1.setText("(Selecione alguma OS para mostrar suas execuções ou cadastrar uma nova)");
+        SignalField1.setText("(Selecione alguma OS para mostrar seus pagamentos ou cadastrar um novo)");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -207,7 +208,7 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
 
         jLabel1.setText("* Id os");
 
-        jLabel2.setText("* Data Execucao (dd/mm/yyyy)");
+        jLabel2.setText("* Data Pagamento (dd/mm/yyyy)");
 
         SignalField.setText("* Campos Obrigatórios");
 
@@ -217,8 +218,8 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
         fieldIdos.setBorder(new javax.swing.border.MatteBorder(null));
         fieldIdos.setName(""); // NOI18N
 
-        tableExecucao = new javax.swing.JTable(){     public boolean isCellEditable(int rowIndex, int colIndex){         return false;     } };
-        tableExecucao.setModel(new javax.swing.table.DefaultTableModel(
+        tablePagamento = new javax.swing.JTable(){     public boolean isCellEditable(int rowIndex, int colIndex){         return false;     } };
+        tablePagamento.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -226,16 +227,16 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
 
             }
         ));
-        tableExecucao.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablePagamento.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableExecucaoMouseClicked(evt);
+                tablePagamentoMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tableExecucao);
+        jScrollPane2.setViewportView(tablePagamento);
 
-        dataAbertura.addActionListener(new java.awt.event.ActionListener() {
+        valorPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dataAberturaActionPerformed(evt);
+                valorPagoActionPerformed(evt);
             }
         });
 
@@ -245,11 +246,17 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
             }
         });
 
-        descOs.setColumns(20);
-        descOs.setRows(5);
-        jScrollPane3.setViewportView(descOs);
+        jLabel5.setText("* Meio Pagamento");
 
-        jLabel5.setText("* Descricao Execucao");
+        dataPagamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dataPagamentoActionPerformed(evt);
+            }
+        });
+
+        meioPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dinheiro", "Cartão de crédito", "Cartão de débito", "PIX", "Boleto"  }));
+
+        jLabel6.setText("* Valor pago");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,23 +271,26 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(6, 6, 6)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel2)
-                                                .addComponent(jLabel1)
-                                                .addComponent(dataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(fieldIdos, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel5))
-                                    .addGap(0, 0, Short.MAX_VALUE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(SignalField))))
+                                    .addGap(0, 0, Short.MAX_VALUE)
+                                    .addComponent(SignalField))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel2)
+                                        .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(fieldIdos, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel1))
+                                            .addGap(18, 18, 18)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel5)
+                                                .addComponent(meioPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel6)
+                                        .addComponent(valorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(0, 0, Short.MAX_VALUE))))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addOS, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 825, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -291,24 +301,26 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 18, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(SignalField)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(valorPago, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addGap(2, 2, 2)
-                        .addComponent(jLabel1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel5))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fieldIdos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(meioPagamento)
+                            .addComponent(fieldIdos, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
                         .addGap(7, 7, 7)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataAbertura, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(dataPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(addOS)
@@ -321,42 +333,47 @@ public class ExecucaoOS extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOSActionPerformed
-        AdicionarExecucaoOS();
+        AdicionarPagamentoOS();
     }//GEN-LAST:event_addOSActionPerformed
 
     private void tableOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableOSMouseClicked
         SelecionarIdOS();
     }//GEN-LAST:event_tableOSMouseClicked
 
-    private void tableExecucaoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableExecucaoMouseClicked
+    private void tablePagamentoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablePagamentoMouseClicked
         
-    }//GEN-LAST:event_tableExecucaoMouseClicked
+    }//GEN-LAST:event_tablePagamentoMouseClicked
 
-    private void dataAberturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataAberturaActionPerformed
+    private void valorPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_valorPagoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_dataAberturaActionPerformed
+    }//GEN-LAST:event_valorPagoActionPerformed
 
     private void idOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idOSActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_idOSActionPerformed
+
+    private void dataPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dataPagamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_dataPagamentoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel SignalField;
     private javax.swing.JLabel SignalField1;
     private javax.swing.JButton addOS;
-    private javax.swing.JTextField dataAbertura;
-    private javax.swing.JTextArea descOs;
+    private javax.swing.JTextField dataPagamento;
     private javax.swing.JTextField fieldIdos;
     private javax.swing.JTextField idOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable tableExecucao;
+    private javax.swing.JComboBox<String> meioPagamento;
     private javax.swing.JTable tableOS;
+    private javax.swing.JTable tablePagamento;
+    private javax.swing.JTextField valorPago;
     // End of variables declaration//GEN-END:variables
 }
