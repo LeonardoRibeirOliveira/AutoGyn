@@ -3,8 +3,17 @@ package views;
 
 import java.sql.*;
 import dal.ConnectionModule;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -39,9 +48,6 @@ public class Home extends javax.swing.JFrame {
         produtoOs = new javax.swing.JMenuItem();
         Report = new javax.swing.JMenu();
         reportService = new javax.swing.JMenuItem();
-        Options = new javax.swing.JMenu();
-        optionsHelp = new javax.swing.JMenuItem();
-        optionsExit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -134,24 +140,14 @@ public class Home extends javax.swing.JFrame {
         Report.setText("Relatório");
 
         reportService.setText("Serviços");
+        reportService.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportServiceActionPerformed(evt);
+            }
+        });
         Report.add(reportService);
 
         menuBarHome.add(Report);
-
-        Options.setText("Opções");
-
-        optionsHelp.setText("Ajuda");
-        Options.add(optionsHelp);
-
-        optionsExit.setText("Sair");
-        optionsExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                optionsExitActionPerformed(evt);
-            }
-        });
-        Options.add(optionsExit);
-
-        menuBarHome.add(Options);
 
         setJMenuBar(menuBarHome);
 
@@ -174,14 +170,6 @@ public class Home extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(936, 647));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void optionsExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_optionsExitActionPerformed
-        int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "Atenção!", JOptionPane.YES_NO_OPTION);
-        
-        if(sair == JOptionPane.YES_OPTION){
-            System.exit(0);
-        }
-    }//GEN-LAST:event_optionsExitActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         int sair = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja sair?", "Atenção!", JOptionPane.YES_NO_OPTION);
@@ -243,6 +231,114 @@ public class Home extends javax.swing.JFrame {
         painelHome.add(produtoOS);
     }//GEN-LAST:event_produtoOsActionPerformed
 
+    private void reportServiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportServiceActionPerformed
+        String outputPath = System.getProperty("user.home") + "/Downloads/relatorio_ordem_servico.csv";
+
+        // Query SQL
+        String sql = """
+                SELECT 
+                    os.IdOS AS OrdemDeServicoID,
+                    os.DataAbertura,
+                    os.DataConclusao,
+                    os.Status,
+                    os.Total,
+                    v.Placa,
+                    v.Modelo,
+                    v.Marca,
+                    v.Ano,
+                    c.Nome AS NomeCliente,
+                    c.CPF_CNPJ,
+                    c.Telefone,
+                    c.Email,
+                    c.Endereco
+                FROM 
+                    OrdensDeServico os
+                INNER JOIN 
+                    Veiculos v ON os.IdVeiculo = v.IdVeiculo
+                INNER JOIN 
+                    Clientes c ON v.IdCliente = c.IdCliente
+            """;
+
+        // Criando o JFrame para exibir os dados
+        JFrame frame = new JFrame("Exportar Relatório");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+
+        // Tabela para exibir os dados
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+        frame.add(scrollPane, BorderLayout.CENTER);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath));
+             PreparedStatement pst = database.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+
+            // Escreve o cabeçalho no CSV e na tabela
+            String[] columns = {"OrdemDeServicoID", "DataAbertura", "DataConclusao", "Status", "Total", "Placa", "Modelo", "Marca", "Ano", "NomeCliente", "CPF_CNPJ", "Telefone", "Email", "Endereco"};
+            model.setColumnIdentifiers(columns);
+            writer.write(String.join(",", columns));
+            writer.newLine();
+
+            // Itera pelos resultados e escreve cada linha no CSV e na tabela
+            while (rs.next()) {
+                Object[] row = {
+                        rs.getInt("OrdemDeServicoID"),
+                        rs.getTimestamp("DataAbertura"),
+                        rs.getTimestamp("DataConclusao"),
+                        rs.getString("Status"),
+                        rs.getDouble("Total"),
+                        rs.getString("Placa"),
+                        rs.getString("Modelo"),
+                        rs.getString("Marca"),
+                        rs.getInt("Ano"),
+                        rs.getString("NomeCliente"),
+                        rs.getString("CPF_CNPJ"),
+                        rs.getString("Telefone"),
+                        rs.getString("Email"),
+                        rs.getString("Endereco")
+                };
+
+                // Adiciona a linha na tabela
+                model.addRow(row);
+
+                // Adiciona a linha no CSV
+                writer.write(String.format("%d,%s,%s,%s,%.2f,%s,%s,%s,%d,%s,%s,%s,%s,%s",
+                        rs.getInt("OrdemDeServicoID"),
+                        rs.getTimestamp("DataAbertura"),
+                        rs.getTimestamp("DataConclusao"),
+                        rs.getString("Status"),
+                        rs.getDouble("Total"),
+                        rs.getString("Placa"),
+                        rs.getString("Modelo"),
+                        rs.getString("Marca"),
+                        rs.getInt("Ano"),
+                        rs.getString("NomeCliente"),
+                        rs.getString("CPF_CNPJ"),
+                        rs.getString("Telefone"),
+                        rs.getString("Email"),
+                        rs.getString("Endereco")
+                ));
+                writer.newLine();
+            }
+
+            // Estilo do cabeçalho da tabela
+            table.getTableHeader().setBackground(Color.LIGHT_GRAY);
+
+            // Mensagem de sucesso
+            JOptionPane.showMessageDialog(frame, "Relatório exportado com sucesso para " + outputPath);
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(frame, "Erro ao executar a consulta: " + e.getMessage());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Erro ao salvar o arquivo: " + e.getMessage());
+        }
+
+        // Exibe o JFrame
+        frame.setVisible(true);
+        
+    }//GEN-LAST:event_reportServiceActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -252,13 +348,10 @@ public class Home extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu Options;
     private javax.swing.JMenu Report;
     private javax.swing.JMenuItem execucaoOs;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar menuBarHome;
-    private javax.swing.JMenuItem optionsExit;
-    private javax.swing.JMenuItem optionsHelp;
     private javax.swing.JMenuItem pagamentoOs;
     private javax.swing.JDesktopPane painelHome;
     private javax.swing.JMenuItem produtoOs;
