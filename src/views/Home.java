@@ -34,9 +34,9 @@ public class Home extends javax.swing.JFrame {
         registerVeicles = new javax.swing.JMenuItem();
         registerService = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        execucaoOs = new javax.swing.JMenuItem();
+        pagamentoOs = new javax.swing.JMenuItem();
+        produtoOs = new javax.swing.JMenuItem();
         Report = new javax.swing.JMenu();
         reportService = new javax.swing.JMenuItem();
         Options = new javax.swing.JMenu();
@@ -105,24 +105,29 @@ public class Home extends javax.swing.JFrame {
 
         jMenu1.setText("Controle");
 
-        jMenuItem1.setText("Execução OS");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        execucaoOs.setText("Execução OS");
+        execucaoOs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                execucaoOsActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(execucaoOs);
 
-        jMenuItem2.setText("Pagamento OS");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        pagamentoOs.setText("Pagamento OS");
+        pagamentoOs.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                pagamentoOsActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(pagamentoOs);
 
-        jMenuItem3.setText("Produto OS");
-        jMenu1.add(jMenuItem3);
+        produtoOs.setText("Produto OS");
+        produtoOs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produtoOsActionPerformed(evt);
+            }
+        });
+        jMenu1.add(produtoOs);
 
         menuBarHome.add(jMenu1);
 
@@ -217,19 +222,26 @@ public class Home extends javax.swing.JFrame {
         painelHome.add(ordemServico);
     }//GEN-LAST:event_registerServiceActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void execucaoOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_execucaoOsActionPerformed
         ExecucaoOS execucaoOS = new ExecucaoOS();
         execucaoOS.setVisible(true);  
         painelHome.removeAll();
         painelHome.add(execucaoOS);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_execucaoOsActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void pagamentoOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagamentoOsActionPerformed
         PagamentoOS pagamentoOS = new PagamentoOS();
         pagamentoOS.setVisible(true);  
         painelHome.removeAll();
         painelHome.add(pagamentoOS);
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_pagamentoOsActionPerformed
+
+    private void produtoOsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produtoOsActionPerformed
+        ProdutoOS produtoOS = new ProdutoOS();
+        produtoOS.setVisible(true);  
+        painelHome.removeAll();
+        painelHome.add(produtoOS);
+    }//GEN-LAST:event_produtoOsActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -242,14 +254,14 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Options;
     private javax.swing.JMenu Report;
+    private javax.swing.JMenuItem execucaoOs;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuBar menuBarHome;
     private javax.swing.JMenuItem optionsExit;
     private javax.swing.JMenuItem optionsHelp;
+    private javax.swing.JMenuItem pagamentoOs;
     private javax.swing.JDesktopPane painelHome;
+    private javax.swing.JMenuItem produtoOs;
     private javax.swing.JMenu register;
     private javax.swing.JMenuItem registerClient;
     private javax.swing.JMenuItem registerService;
